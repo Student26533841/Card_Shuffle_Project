@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,28 +6,47 @@ using System.Threading.Tasks;
 
 namespace CMP1903M_A01_2223
 {
-    class Pack
-    {
-        List<Card> pack;
 
-        public Pack()
+    public class Deck
+    {        
+        private Card[] deck; // creates deck of 52 cards
+        private int current_card;
+        private const int number_of_cards = 52;
+        private Random random_num;
+
+        public Deck() // sets the array of faces and suits
         {
-            //Initialise the card pack here
+            string[] faces = {"Ace", "Two", "Three", "Four", "Five ", "Six", "Seven",
+            "Eight", "Nine", "Ten", "Jack", "Queen", "King"};
+
+            string[] suits = { "Hearts", "Clubs", "Diamonds", "Spades" };
+            deck = new Card[number_of_cards];
+            current_card = 0;
+            random_num = new Random();
+            for (int count = 0; count < deck.Length; count++)
+                deck[count] = new Card(faces[count % 11], suits[count / 13]);
         }
 
-        public static bool shuffleCardPack(int typeOfShuffle)
+        public void shuffle() //shuffles deck
         {
-            //Shuffles the pack based on the type of shuffle
-
+            current_card = 0;
+            for (int first = 0; first < deck.Length; first++)
+            {
+                int second = random_num.Next(number_of_cards);
+                Card temp = deck[first]; // makes temp card into first
+                deck[first] = deck[second]; // makes first card into second
+                deck[second] = temp; // makes second card into temp
+            }
         }
-        public static Card deal()
-        {
-            //Deals one card
 
-        }
-        public static List<Card> dealCard(int amount)
+        public Card deal_card()
         {
-            //Deals the number of cards specified by 'amount'
+            if (current_card < 52)
+            {
+                return deck[current_card++];
+            }
+            else
+                return null;
         }
     }
 }
